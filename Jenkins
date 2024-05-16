@@ -2,7 +2,7 @@ pipeline{
     agent any
 
 environment {
-        SUDO_PASSWORD = credentials('Bhumika@16')
+        SUDO_PASSWORD = 'Bhumika@16'
     }
     stages {
         stage("Code Fetch")
