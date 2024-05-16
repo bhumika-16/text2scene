@@ -1,5 +1,9 @@
 pipeline{
     agent any
+
+environment {
+        SUDO_PASSWORD = credentials('Bhumika@16')
+    }
     stages {
         stage("Code Fetch")
         {
@@ -49,25 +53,31 @@ pipeline{
 
         stage("Deploy Kubernetes pods") {
             steps {
-                sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
-                sh "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
-                sh "kubectl apply -f manifests/deploy/backend-deploy.yaml"
-                sh "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
+                script {
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/mysql-deploy.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/nginx-deploy.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/backend-deploy.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/frontend-deploy.yaml"
+                }
             }
         }
 
-        stage("Set Ingress rules for Frontend and Backend") {
+       stage("Set Ingress rules for Frontend and Backend") {
             steps {
-                sh "kubectl apply -f manifests/ingress/ingress-backend.yaml"
-                sh "kubectl apply -f manifests/ingress/ingress-frontend.yaml"
+                script {
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/ingress/ingress-backend.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/ingress/ingress-frontend.yaml"
+                }
             }
         }
 
         stage("Deploy Kubernetes services") {
             steps {
-                sh "kubectl apply -f manifests/svc/backend-service.yaml"
-                sh "kubectl apply -f manifests/svc/frontend-service.yaml"
-                sh "kubectl apply -f manifests/svc/nginx-svc.yaml"
+                script {
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/svc/backend-service.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/svc/frontend-service.yaml"
+                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/svc/nginx-svc.yaml"
+                }
             }
         }
     }
