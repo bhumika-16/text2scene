@@ -1,0 +1,15 @@
+.gallery-img:hover {
+  transform: scale(1.05);
+}
+
+.brain-img {
+  width: 90%;
+  height: 70%;
+  border-radius: 8px;
+  object-fit: scale-down;
+  transition: transform 0.3s ease;
+}
+
+.brain-img:hover {
+  transform: scale(1.05);
+}
