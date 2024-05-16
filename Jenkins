@@ -54,7 +54,7 @@ environment {
         stage("Deploy Kubernetes pods") {
             steps {
                 script {
-                    sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml --validate=false"
+                    sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml --v=10"
                     sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/deploy/nginx-deploy.yaml"
                     sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/deploy/backend-deploy.yaml"
                     sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f manifests/deploy/frontend-deploy.yaml"
