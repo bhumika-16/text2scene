@@ -54,10 +54,10 @@ environment {
         stage("Deploy Kubernetes pods") {
             steps {
                 script {
-                    sh "echo Bhumika@16 | sudo -S kubectl apply -f deploy/mysql-deploy.yaml"
-                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/nginx-deploy.yaml"
-                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/backend-deploy.yaml"
-                    sh "echo ${env.SUDO_PASSWORD} | sudo -S kubectl apply -f deploy/frontend-deploy.yaml"
+                    sh "kubectl apply -f deploy/mysql-deploy.yaml --validate=false"
+                    sh "kubectl apply -f deploy/nginx-deploy.yaml --validate=false"
+                    sh "kubectl apply -f deploy/backend-deploy.yaml --validate=false"
+                    sh "kubectl apply -f deploy/frontend-deploy.yaml --validate=false"
                 }
             }
         }
