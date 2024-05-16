@@ -49,25 +49,25 @@ pipeline{
 
         stage("Deploy Kubernetes pods") {
             steps {
-                sh "sudo kubectl apply -f manifests/deploy/mysql-deploy.yaml"
-                sh "sudo kubectl apply -f manifests/deploy/nginx-deploy.yaml"
-                sh "sudo kubectl apply -f manifests/deploy/backend-deploy.yaml"
-                sh "sudo kubectl apply -f manifests/deploy/frontend-deploy.yaml"
+                sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
+                sh "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
+                sh "kubectl apply -f manifests/deploy/backend-deploy.yaml"
+                sh "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
             }
         }
 
         stage("Set Ingress rules for Frontend and Backend") {
             steps {
-                sh "sudo kubectl apply -f manifests/ingress/ingress-backend.yaml"
-                sh "sudo kubectl apply -f manifests/ingress/ingress-frontend.yaml"
+                sh "kubectl apply -f manifests/ingress/ingress-backend.yaml"
+                sh "kubectl apply -f manifests/ingress/ingress-frontend.yaml"
             }
         }
 
         stage("Deploy Kubernetes services") {
             steps {
-                sh "sudo kubectl apply -f manifests/svc/backend-service.yaml"
-                sh "sudo kubectl apply -f manifests/svc/frontend-service.yaml"
-                sh "sudo kubectl apply -f manifests/svc/nginx-svc.yaml"
+                sh "kubectl apply -f manifests/svc/backend-service.yaml"
+                sh "kubectl apply -f manifests/svc/frontend-service.yaml"
+                sh "kubectl apply -f manifests/svc/nginx-svc.yaml"
             }
         }
     }
