@@ -2,7 +2,7 @@ pipeline{
     agent any
 
 environment {
-        SUDO_PASSWORD = 'Bhumika@16'
+        SUDO_PASSWORD = "Bhumika@16"
     }
     stages {
         stage("Code Fetch")
@@ -85,7 +85,7 @@ environment {
         always {
             emailext subject: 'Jenkins Calculator Project',
                     body: 'Project built now...',
-                    to: 'asijit1610@gmail.com'
+                    to: 'bhumikajindal2014@gmail.com'
         }
     }
 }
