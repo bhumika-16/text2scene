@@ -13,29 +13,29 @@ pipeline {
         }
         stage("Build Backend Docker Image") {
             steps {
-                sh "docker build -t bhumika-t2i-backend:${DOCKER_IMAGE_TAG} src/backend"
+                bat "docker build -t bhumika-t2i-backend:${DOCKER_IMAGE_TAG} src/backend"
             }
         }
         stage("Build Frontend Docker Image") {
             steps {
-                sh "docker build -t bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} src/frontend"
+                bat "docker build -t bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} src/frontend"
             }
         }
         stage("Push Backend Docker Images") {
             steps {
                 withCredentials([usernamePassword(credentialsId:"DockerHubCred",passwordVariable:"dockerpassword",usernameVariable:"dockerusername")]){
-                    sh "docker login -u ${env.dockerusername} -p ${env.dockerpassword}"
-                    sh "docker tag bhumika-t2i-backend:${DOCKER_IMAGE_TAG} ${env.dockerusername}/bhumika-t2i-backend"
-                    sh "docker push ${env.dockerusername}/bhumika-t2i-backend"
+                    bat "docker login -u ${env.dockerusername} -p ${env.dockerpassword}"
+                    bat "docker tag bhumika-t2i-backend:${DOCKER_IMAGE_TAG} ${env.dockerusername}/bhumika-t2i-backend"
+                    bat "docker push ${env.dockerusername}/bhumika-t2i-backend"
                 }
             }
         }
         stage("Push Frontend Docker Images") {
             steps {
                 withCredentials([usernamePassword(credentialsId:"DockerHubCred",passwordVariable:"dockerpassword",usernameVariable:"dockerusername")]){
-                    sh "docker login -u ${env.dockerusername} -p ${env.dockerpassword}"
-                    sh "docker tag bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} ${env.dockerusername}/bhumika-t2i-frontend"
-                    sh "docker push ${env.dockerusername}/bhumika-t2i-frontend"
+                    bat "docker login -u ${env.dockerusername} -p ${env.dockerpassword}"
+                    bat "docker tag bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} ${env.dockerusername}/bhumika-t2i-frontend"
+                    bat "docker push ${env.dockerusername}/bhumika-t2i-frontend"
                 }
             }
         }
@@ -43,41 +43,41 @@ pipeline {
         stage("Deploy Kubernetes") {
             steps {
                 withCredentials([usernamePassword(credentialsId:"DockerHubCred",passwordVariable:"dockerpassword",usernameVariable:"dockerusername")]){
-                    sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
-                    sh "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
-                    sh "kubectl apply -f manifests/deploy/backend-deploy.yaml"
-                    sh "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/backend-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
                 }
             }
         }
         stage("Set Ingress rules for Frontend and Backend") {
             steps {
-                sh "sudo kubectl apply -f manifests/ingress/ingress-backend.yaml"
-                sh "sudo kubectl apply -f manifests/ingress/ingress-frontend.yaml"
+                bat "sudo kubectl apply -f manifests/ingress/ingress-backend.yaml"
+                bat "sudo kubectl apply -f manifests/ingress/ingress-frontend.yaml"
             }
         }
         stage("Deploy Kubernetes services") {
             steps {
-                sh "sudo kubectl apply -f manifests/svc/backend-service.yaml"
-                sh "sudo kubectl apply -f manifests/svc/frontend-service.yaml"
-                sh "sudo kubectl apply -f manifests/svc/nginx-svc.yaml"
+                bat "sudo kubectl apply -f manifests/svc/backend-service.yaml"
+                bat "sudo kubectl apply -f manifests/svc/frontend-service.yaml"
+                bat "sudo kubectl apply -f manifests/svc/nginx-svc.yaml"
             }
         }
     }
     post {
         success {
             script {
-                sh "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase==Running"
-                sh "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase==Running"
-                sh "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase!=Running"
-                sh "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase!=Running"
-                sh "docker image prune -f"
-                sh "docker rmi ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
+                bat "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase==Running"
+                bat "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase==Running"
+                bat "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase!=Running"
+                bat "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase!=Running"
+                bat "docker image prune -f"
+                bat "docker rmi ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
             }
         }
         failure {
-            sh 'echo "Build failed"'
-            sh "docker rmi ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
+            bat 'echo "Build failed"'
+            bat "docker rmi ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
         }
     }
 }
