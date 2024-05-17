@@ -42,7 +42,7 @@ pipeline {
         stage("Deploy Kubernetes") {
             steps {
                 withCredentials([usernamePassword(credentialsId:"DockerHubCred",passwordVariable:"dockerpassword",usernameVariable:"dockerusername")]){
-                    sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
+                    sh "kubectl apply -f manifests/deploy/mysql-deploy.yaml --validate=false"
                     sh "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
                     sh "kubectl apply -f manifests/deploy/backend-deploy.yaml"
                     sh "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
