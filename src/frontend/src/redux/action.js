@@ -39,6 +39,8 @@ export const login = (email, password) => {
   };
 };
 
+//todo update
+
 export const updateToken = (token) => {
   return {
     type: UPDATE_TOKEN,

@@ -19,7 +19,7 @@ const LoginForm = () => {
   if (user) {
     return <Navigate replace to="/" />;
   }
-
+//x
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
@@ -74,16 +74,6 @@ const LoginForm = () => {
       });
     }
   };
-
-  // if (error) {
-  //   enqueueSnackbar(error, {
-  //     variant: "error",
-  //     anchorOrigin: {
-  //       vertical: "bottom",
-  //       horizontal: "right",
-  //     },
-  //   });
-  // }
 
   const showLoginForm = () => {
     setShowLogin(true);
