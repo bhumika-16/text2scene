@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        KUBECONFIG = "fix/kubeconfig"
         DOCKER_IMAGE_TAG = "${currentBuild.number}"
         BACKEND_IMAGE = "bhumika-t2i-backend:${DOCKER_IMAGE_TAG}"
         FRONTEND_IMAGE = "bhumika-t2i-frontend:${DOCKER_IMAGE_TAG}"
@@ -40,11 +39,6 @@ pipeline {
                 }
             }
         }
- stage("deploy") {
-            steps {
-        bat "kubectl auth can-i create deployments"
-}
-}
         stage("Deploy Kubernetes") {
             steps {
                 withCredentials([usernamePassword(credentialsId: "DockerHubCred", passwordVariable: "dockerpassword", usernameVariable: "dockerusername")]) {
