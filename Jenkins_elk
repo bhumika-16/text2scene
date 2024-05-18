@@ -50,6 +50,21 @@ pipeline {
                 }
             }
         }
+
+        stage("Deploy ELK Stack") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "DockerHubCred", passwordVariable: "dockerpassword", usernameVariable: "dockerusername")]) {
+                    bat "kubectl apply -f manifests/elk/elasticsearch-deployment.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/elasticsearch-service.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/logstash-configmap.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/logstash-deployment.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/logstash-service.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/kibana-deployment.yaml --validate=false"
+                    bat "kubectl apply -f manifests/elk/kibana-service.yaml --validate=false"
+                }
+            }
+        }
+
         stage("Set Ingress rules for Frontend and Backend") {
             steps {
                 bat "kubectl apply -f manifests/ingress/ingress-backend.yaml"
