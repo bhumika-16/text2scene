@@ -42,7 +42,11 @@ pipeline {
         }
         stage("Deploy ELK") {
             steps {
-                bat "kubectl --kubeconfig=${KUBECONFIG} apply -f manifests/deploy/fluentbit-deploy.yaml"
+                    // Assuming the kubeconfig file is in the 'config' directory within the repo
+                    def kubeconfigPath = "${env.WORKSPACE}/fix/kubeconfig"
+                    // Deploy the manifest using the relative path to the kubeconfig
+                    bat "kubectl --kubeconfig=${kubeconfigPath} apply -f manifests/deploy/fluentbit-deploy.yaml"
+               
                 bat "kubectl apply -f manifests/deploy/logtash-deploy.yaml"
                 bat "kubectl apply -f manifests/deploy/elasticsearch-deploy.yaml"
                 bat "kubectl apply -f manifests/deploy/kibana-deploy.yaml"
