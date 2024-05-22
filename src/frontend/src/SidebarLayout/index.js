@@ -191,20 +191,6 @@ export default function Sidebar() {
                                     </Link>
                                 </ListItem>
                                 <ListItem component="div">
-                                    <Link href="/semantic-analysis" underline="none" sx={{ width: "100%" }}>
-                                        <Button
-                                            className={
-                                                currentRoute === "/semantic-analysis" ? "active" : ""
-                                            }
-                                            disableRipple
-                                            component="a"
-                                            startIcon={<AnalyticsTwoToneIcon />}
-                                        >
-                                            Semantic Analysis
-                                        </Button>
-                                    </Link>
-                                </ListItem>
-                                <ListItem component="div">
                                     <Link href="/content-analysis" underline="none" sx={{ width: "100%" }}>
                                         <Button
                                             className={
@@ -218,6 +204,21 @@ export default function Sidebar() {
                                         </Button>
                                     </Link>
                                 </ListItem>
+                                <ListItem component="div">
+                                    <Link href="/semantic-analysis" underline="none" sx={{ width: "100%" }}>
+                                        <Button
+                                            className={
+                                                currentRoute === "/semantic-analysis" ? "active" : ""
+                                            }
+                                            disableRipple
+                                            component="a"
+                                            startIcon={<AnalyticsTwoToneIcon />}
+                                        >
+                                            Semantic Analysis
+                                        </Button>
+                                    </Link>
+                                </ListItem>
+                                
                             </List>
                         </SubMenuWrapper>
                     </List>
