@@ -42,37 +42,37 @@ pipeline {
         }
         stage("Deploy ELK") {
             steps {
-                bat "sudo kubectl apply -f manifests/deploy/fluentbit-deploy.yaml"
-                bat "sudo kubectl apply -f manifests/deploy/logtash-deploy.yaml"
-                bat "sudo kubectl apply -f manifests/deploy/elasticsearch-deploy.yaml"
-                bat "sudo kubectl apply -f manifests/deploy/kibana-deploy.yaml"
-                bat "sudo kubectl apply -f manifests/svc/elasticsearch-svc.yaml"
-                bat "sudo kubectl apply -f manifests/svc/logtash-svc.yaml"
-                bat "sudo kubectl apply -f manifests/svc/kibana-svc.yaml"
+                bat "kubectl apply -f manifests/deploy/fluentbit-deploy.yaml"
+                bat "kubectl apply -f manifests/deploy/logtash-deploy.yaml"
+                bat "kubectl apply -f manifests/deploy/elasticsearch-deploy.yaml"
+                bat "kubectl apply -f manifests/deploy/kibana-deploy.yaml"
+                bat "kubectl apply -f manifests/svc/elasticsearch-svc.yaml"
+                bat "kubectl apply -f manifests/svc/logtash-svc.yaml"
+                bat "kubectl apply -f manifests/svc/kibana-svc.yaml"
             }
         }
         
         stage("Deploy Kubernetes") {
             steps {
                 withCredentials([usernamePassword(credentialsId:"DockerHubCred",passwordVariable:"dockerpassword",usernameVariable:"dockerusername")]){
-                    bat "sudo kubectl apply -f manifests/deploy/mysql-deploy.yaml"
-                    bat "sudo kubectl apply -f manifests/deploy/nginx-deploy.yaml"
-                    bat "sudo kubectl apply -f manifests/deploy/backend-deploy.yaml"
-                    bat "sudo kubectl apply -f manifests/deploy/frontend-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/mysql-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/nginx-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/backend-deploy.yaml"
+                    bat "kubectl apply -f manifests/deploy/frontend-deploy.yaml"
                 }
             }
         }
         stage("Set Ingress rules for Frontend and Backend") {
             steps {
-                bat "sudo kubectl apply -f manifests/ingress/ingress-backend.yaml"
-                bat "sudo kubectl apply -f manifests/ingress/ingress-frontend.yaml"
+                bat "kubectl apply -f manifests/ingress/ingress-backend.yaml"
+                bat "kubectl apply -f manifests/ingress/ingress-frontend.yaml"
             }
         }
         stage("Deploy Kubernetes services") {
             steps {
-                bat "sudo kubectl apply -f manifests/svc/backend-service.yaml"
-                bat "sudo kubectl apply -f manifests/svc/frontend-service.yaml"
-                bat "sudo kubectl apply -f manifests/svc/nginx-svc.yaml"
+                bat "kubectl apply -f manifests/svc/backend-service.yaml"
+                bat "kubectl apply -f manifests/svc/frontend-service.yaml"
+                bat "kubectl apply -f manifests/svc/nginx-svc.yaml"
             }
         }
     }
@@ -80,10 +80,10 @@ pipeline {
     post {
         success {
             script {
-                bat "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase==Running"
-                bat "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase==Running"
-                bat "sudo kubectl delete pod -l app=bhumika-backend --field-selector=status.phase!=Running"
-                bat "sudo kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase!=Running"
+                bat "kubectl delete pod -l app=bhumika-backend --field-selector=status.phase==Running"
+                bat "kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase==Running"
+                bat "kubectl delete pod -l app=bhumika-backend --field-selector=status.phase!=Running"
+                bat "kubectl delete pod -l app=bhumika-frontend --field-selector=status.phase!=Running"
                 bat "docker image prune -f"
                 bat "docker rmi ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
             }
