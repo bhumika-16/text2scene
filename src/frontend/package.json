@@ -30,7 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
-    "test:ci": "cross-env CI=true react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'"
+    "test:ci": "cross-env CI=true react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -56,6 +56,6 @@
     "@testing-library/react": "^15.0.7",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "jest": "^27.5.1",
-    "cross-env": "^7.0.3",
+    "cross-env": "^7.0.3"
   }
 }
