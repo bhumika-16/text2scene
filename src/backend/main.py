@@ -19,7 +19,6 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
 )
 from googletrans import Translator
-from userMixin import *
 
 def create_users_table():
     connection = pymysql.connect(
