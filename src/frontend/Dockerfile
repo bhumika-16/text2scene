@@ -13,6 +13,9 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Set environment variable for CI
+ENV CI=true
+
 # Build the React application (not necessary if using 'npm start')
 # RUN npm run build
 
