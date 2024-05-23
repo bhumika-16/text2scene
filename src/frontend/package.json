@@ -30,7 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
-    "test:ci": "CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
+    "test:ci": "cross-env CI=true react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'"
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
