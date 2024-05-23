@@ -17,9 +17,19 @@ pipeline {
                 bat "docker build -t bhumika-t2i-backend:${DOCKER_IMAGE_TAG} src/backend"
             }
         }
+        stage("Testing Backend application") {
+            steps {
+                bat "docker run --rm ${BACKEND_IMAGE} pytest ." 
+            }
+        }
         stage("Build Frontend Docker Image") {
             steps {
                 bat "docker build -t bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} src/frontend"
+            }
+        }
+        stage("Testing Frontend application") {
+            steps {
+                bat "docker run --rm ${FRONTEND_IMAGE} npm run test:ci"
             }
         }
         stage("Push Backend Docker Images") {
@@ -77,8 +87,26 @@ pipeline {
         }
          stage("Setting up autoscaling") {
             steps {
-                bat "kubectl autoscale deployment bhumika-backend-deployment --cpu-percent=50 --min=1 --max=10"
-                bat "kubectl autoscale deployment bhumika-frontend-deployment --cpu-percent=50 --min=1 --max=10"
+                script {
+                    def hpaBackendExists = bat (
+                        script: 'kubectl get hpa bhumika-backend-deployment',
+                        returnStatus: true
+                    ) == 0
+                    if (!hpaBackendExists) {
+                        bat "kubectl autoscale deployment bhumika-backend-deployment --cpu-percent=50 --min=1 --max=10"
+                    } else {
+                        echo "HPA bhumika-backend-deployment already exists"
+                    }
+                    def hpaFrontendExists = bat (
+                        script: 'kubectl get hpa bhumika-frontend-deployment',
+                        returnStatus: true
+                    ) == 0
+                    if (!hpaFrontendExists) {
+                        bat "kubectl autoscale deployment bhumika-frontend-deployment --cpu-percent=50 --min=1 --max=10"
+                    } else {
+                        echo "HPA bhumika-frontend-deployment already exists"
+                    }
+                }
             }
         }
     }
