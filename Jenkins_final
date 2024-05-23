@@ -95,7 +95,7 @@ pipeline {
                         returnStatus: true
                     ) == 0
                     if (!hpaBackendExists) {
-                        bat "kubectl autoscale deployment bhumika-backend-deployment --cpu-percent=50 --min=1 --max=10"
+                        bat "kubectl autoscale deployment bhumika-backend-deployment --cpu-percent=25 --min=1 --max=2"
                     } else {
                         echo "HPA bhumika-backend-deployment already exists"
                     }
@@ -104,7 +104,7 @@ pipeline {
                         returnStatus: true
                     ) == 0
                     if (!hpaFrontendExists) {
-                        bat "kubectl autoscale deployment bhumika-frontend-deployment --cpu-percent=50 --min=1 --max=10"
+                        bat "kubectl autoscale deployment bhumika-frontend-deployment --cpu-percent=25 --min=1 --max=2"
                     } else {
                         echo "HPA bhumika-frontend-deployment already exists"
                     }
