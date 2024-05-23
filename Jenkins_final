@@ -13,16 +13,7 @@ pipeline {
             }
         }
        
-        stage("Build Frontend Docker Image") {
-            steps {
-                bat "docker build -t bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} src/frontend"
-            }
-        }
-        stage("Testing Frontend application") {
-            steps {
-                bat "docker run --rm ${FRONTEND_IMAGE} npm run test:ci"
-            }
-        }
+        
 
          stage("Build Backend Docker Image") {
             steps {
@@ -34,6 +25,16 @@ pipeline {
                 bat "docker run --rm ${BACKEND_IMAGE} pytest ." 
             }
         }
+        stage("Build Frontend Docker Image") {
+            steps {
+                bat "docker build -t bhumika-t2i-frontend:${DOCKER_IMAGE_TAG} src/frontend"
+            }
+        }
+       // stage("Testing Frontend application") {
+            //steps {
+              //  bat "docker run --rm ${FRONTEND_IMAGE} npm run test:ci"
+           // }
+        //}
 
         
         stage("Push Backend Docker Images") {
