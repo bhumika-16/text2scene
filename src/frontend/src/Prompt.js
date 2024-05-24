@@ -220,7 +220,7 @@ const Prompt = ({
                   gutterBottom
                   sx={{ fontSize: "0.975rem", color: "#fff", fontWeight: 700 }}
                 >
-                  Prompt
+                  Promt
                 </Typography>
               ) : (
                 <>
@@ -235,7 +235,7 @@ const Prompt = ({
                       fontWeight: 700,
                     }}
                   >
-                    Prompt
+                    Promt
                   </Typography>
                   <Divider
                     sx={{
