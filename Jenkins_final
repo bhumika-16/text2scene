@@ -1,4 +1,5 @@
 pipeline {
+    //hello
     agent any
     environment {
         KUBECONFIG = "fix/kubeconfig"
