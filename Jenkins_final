@@ -1,6 +1,7 @@
 pipeline {
     agent any
     environment {
+    //hello
         KUBECONFIG = "fix/kubeconfig"
         DOCKER_IMAGE_TAG = "${currentBuild.number}"
         BACKEND_IMAGE = "bhumika-t2i-backend:${DOCKER_IMAGE_TAG}"
